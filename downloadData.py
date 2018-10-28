@@ -1,14 +1,18 @@
 #! /usr/bin/python3
 import urllib.request
-
+import os.path
 
 def download():
     base = 'https://storage.googleapis.com/quickdraw_dataset/full/numpy_bitmap/'
     for c in categories:
         categories_url = c.replace('_', '%20')
         path = base + categories_url + '.npy'
-        print(path)
-        urllib.request.urlretrieve(path, 'data/' + c + '.npy')
+        
+        if not os.path.isfile('data/' +str(c) + '.npy'):
+            print('Downloading : ' + str(path))
+            urllib.request.urlretrieve(path, 'data/' + c + '.npy')
+        else:
+            print(str(path) + ' is already downloaded !')
 
 
 f = open("categories.txt", "r")
