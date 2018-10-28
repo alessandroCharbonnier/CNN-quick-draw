@@ -16,7 +16,6 @@ def download():
 
 
 f = open("categories.txt", "r")
-# And for reading use
 categories = f.readlines()
 f.close()
 
