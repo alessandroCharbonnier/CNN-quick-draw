@@ -15,7 +15,7 @@ def download():
             print(str(path) + ' is already downloaded !')
 
 
-f = open("categories.txt", "r")
+f = open("mini_categories.txt", "r")
 categories = f.readlines()
 f.close()
 
