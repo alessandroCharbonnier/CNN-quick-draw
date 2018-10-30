@@ -5,6 +5,10 @@ from tensorflow.keras import layers
 from tensorflow import keras 
 import tensorflow as tf
 
+from tensorflow.python.client import device_lib
+print(device_lib.list_local_devices())
+
+file_used = 'mini_categories.txt'
 
 def load_data(root, vfold_ratio=0.2, max_items_per_class=4000):
     all_files = glob.glob(os.path.join(root, '*.npy'))
@@ -62,7 +66,7 @@ y_test = keras.utils.to_categorical(y_test, num_classes)
 
 print('read_dataFile')
 # get the number of categories
-f = open("categories.txt", "r")
+f = open(file_used, "r")
 categories = f.readlines()
 f.close()
 total_categories = len(categories)
@@ -70,30 +74,33 @@ total_categories = len(categories)
 print('load_model')
 # Define model
 model = keras.Sequential()
-model.add(layers.Convolution2D(16, (3, 3),
-                               padding='same',
-                               input_shape=x_train.shape[1:], activation='relu'))
+
+model.add(layers.Convolution2D(16, (3, 3), padding='same', input_shape=x_train.shape[1:], activation='relu'))
 model.add(layers.MaxPooling2D(pool_size=(2, 2)))
+model.add(tf.keras.layers.Dropout(0.3))
+
 model.add(layers.Convolution2D(32, (3, 3), padding='same', activation='relu'))
 model.add(layers.MaxPooling2D(pool_size=(2, 2)))
+model.add(tf.keras.layers.Dropout(0.3))
+
 model.add(layers.Convolution2D(64, (3, 3), padding='same', activation='relu'))
 model.add(layers.MaxPooling2D(pool_size=(2, 2)))
+model.add(tf.keras.layers.Dropout(0.3))
+
 model.add(layers.Flatten())
 model.add(layers.Dense(128, activation='relu'))
+model.add(tf.keras.layers.Dropout(0.5))
 model.add(layers.Dense(total_categories, activation='softmax'))
 
 print('make_model')
 # Train model
 adam = tf.train.AdamOptimizer()
-model.compile(loss='categorical_crossentropy',
-              optimizer=adam,
-              metrics=['top_k_categorical_accuracy'])
+model.compile(loss='categorical_crossentropy', optimizer=adam, metrics=['top_k_categorical_accuracy'])
 print(model.summary())
 
 print('fit_data')
 # training the model
-model.fit(x=x_train, y=y_train, validation_split=0.1,
-          batch_size=256, verbose=2, epochs=20)
+model.fit(x=x_train, y=y_train, validation_split=0.5, batch_size=256, verbose=1, epochs=250)
 
 print('testing')
 # testing the result
