@@ -5,9 +5,6 @@ from tensorflow.keras import layers
 from tensorflow import keras 
 import tensorflow as tf
 
-from tensorflow.python.client import device_lib
-print(device_lib.list_local_devices())
-
 file_used = 'mini_categories.txt'
 
 def load_data(root, vfold_ratio=0.2, max_items_per_class=4000):
@@ -100,11 +97,11 @@ print(model.summary())
 
 print('fit_data')
 # training the model
-model.fit(x=x_train, y=y_train, validation_split=0.5, batch_size=256, verbose=1, epochs=250)
+model.fit(x=x_train, y=y_train, validation_split=0.2, batch_size=256, verbose=1, epochs=10000)
 
 print('testing')
 # testing the result
 score = model.evaluate(x_test, y_test, verbose=0)
 print('Test accuarcy: {:0.2f}%'.format(score[1] * 100))
 
-model.save('keras.h5')
+model.save('keras1.h5')

@@ -1,4 +1,3 @@
-#! /usr/bin/python3
 import urllib.request
 import os.path
 
@@ -15,11 +14,12 @@ def download():
             print(str(path) + ' is already downloaded !')
 
 
-f = open("mini_categories.txt", "r")
+f = open("./categories.txt", "r")
 categories = f.readlines()
 f.close()
 
 categories = [c.replace('\n', '').replace(' ', '_') for c in categories]
 print('Downloading ' + str(len(categories)) + ' categories')
 
-download()
+if __name__ == '__main__':
+	download()
