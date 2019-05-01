@@ -47,7 +47,6 @@ function mouseReleased() {
                 data.push((p.a * 100).toFixed(3));
                 colors.push("hsl(" + floor(random(360)) + ",100%,40%)");
             }
-            console.log(labels);
 
             let datal = {
                 labels: labels,
